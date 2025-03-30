@@ -112,19 +112,19 @@ class Menu extends StatelessWidget {
             const SizedBox(height: 16),
             const Text(
               'Lista de Gastos',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Poppins'),
             ),
             const SizedBox(height: 16),
             ListTile(
-              leading: const Icon(Icons.account_balance_wallet),
-              title: const Text('Balance de Deudas'),
+              leading: const Icon(Icons.account_balance_wallet, color: Colors.green,),
+              title: const Text('Balance de Deudas', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, color: Colors.green),),
               onTap: () {
                 // Navegar a pantalla de balance
               },
             ),
             ListTile(
-              leading: const Icon(Icons.bar_chart),
-              title: const Text('Estadísticas'),
+              leading: const Icon(Icons.bar_chart, color: Colors.green,),
+              title: const Text('Estadísticas', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, color: Colors.green),),
               onTap: () {
                 // Navegar a pantalla de estadísticas
               },

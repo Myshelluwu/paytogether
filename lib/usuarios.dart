@@ -33,17 +33,26 @@ class Users extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 14, color: Colors.grey, fontFamily: 'Poppins'),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 24), 
               Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: TextEditingController(), //change
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Nombre del participante',
-                        border: OutlineInputBorder(),
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.grey[700]!), // Borde gris
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color:
+                                  Colors.green), // Borde cuando está enfocado
+                        ),
                       ),
                       style: const TextStyle(fontFamily: 'Poppins'),
                     ),
@@ -76,7 +85,7 @@ class Users extends StatelessWidget {
               // Lista de participantes
               // // Expanded(
               //   child: //_participantes.isEmpty
-              //       //? 
+              //       //?
               //       const Center(
               //           child: Text(
               //             'No hay participantes. Añade algunos para comenzar.',
@@ -87,7 +96,7 @@ class Users extends StatelessWidget {
               //             ),
               //           ),
               //         )
-              //       : 
+              //       :
               //       ListView.builder(
               //           itemCount: _participantes.length,
               //           itemBuilder: (context, index) {

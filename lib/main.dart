@@ -2,43 +2,62 @@ import 'package:flutter/material.dart';
 import 'package:paytogether/menu.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const PayTogetherApp()); // Nombre más descriptivo
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PayTogetherApp extends StatelessWidget {
+  const PayTogetherApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MyHomePage(),
+      title: 'PayTogether', // Añadido para identificación en el switcher de apps
+      theme: ThemeData(
+        primarySwatch: Colors.green, // Color principal de la app
+        fontFamily: 'Poppins', // Fuente global
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const SplashScreen(), // Renombrado para claridad
+      debugShowCheckedModeBanner: false, // Quita el banner de debug
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Fondo blanco profesional
       body: Center(
-        child: TextButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Menu()),
-            );
-          },
-          style: TextButton.styleFrom(
-            foregroundColor: Colors.green,
-            textStyle: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Poppins',
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo/icono sugerido (puedes cambiarlo)
+            const Icon(
+              Icons.account_balance_wallet,
+              size: 100,
+              color: Colors.green,
             ),
-          ),
-          child: Text('PayTogether'),
+            const SizedBox(height: 20), // Espaciado
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacement( // Mejor que push para pantalla de inicio
+                  context,
+                  MaterialPageRoute(builder: (context) => const Menu()),
+                );
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.green,
+                textStyle: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              child: const Text('PayTogether'), // Texto más descriptivo
+            ),
+          ],
         ),
       ),
     );

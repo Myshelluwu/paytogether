@@ -8,135 +8,232 @@ class Menu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'PayTogether',
+      appBar: _buildAppBar(),
+      body: _buildBody(context),
+      floatingActionButton: _buildFloatingActionButton(context),
+    );
+  }
+
+  // Componentes separados para mejor legibilidad
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: const Text(
+        'PayTogether',
+        style: TextStyle(
+          color: Colors.green,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Poppins',
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDebtCalculationSection(context),
+          const SizedBox(height: 24),
+          const Divider(),
+          _buildDebtVisualizationSection(),
+          const SizedBox(height: 16),
+          const Divider(),
+          _buildCircleButton(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDebtCalculationSection(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Cálculo de deudas',
           style: TextStyle(
-            color: Colors.green,
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
             fontFamily: 'Poppins',
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                'Control de Gastos Compartidos',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins'),
-              ),
-              Text(
-                'Registra gastos y calcula deudas entre participantes',
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                    fontFamily: 'Poppins'),
-              ),
-            ]),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Users()),
-                    ); // Acción para añadir participantes
-                  },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.green,
-                    side: BorderSide(color: Colors.green),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(Icons.people_outline,
-                          size: 20, color: Colors.green), // Icono de usuarios
-                      SizedBox(width: 8), // Espacio entre icono y texto
-                      Text(
-                        'Participantes',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 14, // Tamaño consistente con tu diseño
-                        ),
-                      ),
-                    ],
-                  ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: _buildMenuButton(
+                  context: context,
+                  text: 'Cuentas Individuales',
+                  icon: Icons.person_outline,
+                  destination: const Users(),
                 ),
-                const SizedBox(width: 16),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Gastos()),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    side: BorderSide(color: Colors.white),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(Icons.add_circle_outline_outlined,
-                          size: 20, color: Colors.white), // Icono de usuarios
-                      SizedBox(width: 8), // Espacio entre icono y texto
-                      Text(
-                        'Nuevo Gasto',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 14, // Tamaño consistente con tu diseño
-                        ),
-                      ),
-                    ],
-                  ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: _buildMenuButton(
+                  context: context,
+                  text: 'Cuentas Grupales',
+                  icon: Icons.group_outlined,
+                  destination: const Gastos(),
                 ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Divider(),
-            const SizedBox(height: 16),
-            const Text(
-              'Lista de Gastos',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Poppins'),
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              leading: const Icon(Icons.account_balance_wallet, color: Colors.green,),
-              title: const Text('Balance de Deudas', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, color: Colors.green),),
-              onTap: () {
-                // Navegar a pantalla de balance
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.bar_chart, color: Colors.green,),
-              title: const Text('Estadísticas', style: TextStyle(fontFamily: 'Poppins', fontSize: 16, color: Colors.green),),
-              onTap: () {
-                // Navegar a pantalla de estadísticas
-              },
+              ),
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildDebtVisualizationSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Visualización de Deudas',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins',
+          ),
+        ),
+        const SizedBox(height: 16),
+        Center(
+          child: Card(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  Icon(Icons.pie_chart_outline, size: 50, color: Colors.green),
+                  SizedBox(height: 8),
+                  Text(
+                    'Gráfica de Deudas',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCircleButton(BuildContext context) {
+    return OutlinedButton(
+      onPressed: () => _navigateTo(context, const Users()),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Colors.green,
+        side: const BorderSide(color: Colors.green),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        minimumSize: const Size(double.infinity, 48), // Ancho completo
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acción para añadir nuevo gasto
-        },
-        child: const Icon(Icons.add),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.people_outline, size: 20, color: Colors.green),
+          SizedBox(width: 8),
+          Text(
+            'Mi Círculo',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => _showAddExpenseDialog(context),
+      tooltip: 'Añadir Gasto',
+      shape: const CircleBorder(),
+      backgroundColor: Colors.green,
+      child: const Icon(Icons.add, color: Colors.white, size: 30),
+    );
+  }
+
+  // Métodos reutilizables
+  Widget _buildMenuButton({
+    required BuildContext context,
+    required String text,
+    required IconData icon,
+    required Widget destination,
+  }) {
+    return OutlinedButton(
+      onPressed: () => _navigateTo(context, destination),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Colors.green,
+        side: const BorderSide(color: Colors.green),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 20, color: Colors.green),
+          const SizedBox(width: 8),
+          Text(
+            text,
+            style: const TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget screen) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
+
+  void _showAddExpenseDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Nuevo Gasto'),
+        content: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(decoration: InputDecoration(labelText: 'Descripción')),
+            SizedBox(height: 10),
+            TextField(decoration: InputDecoration(labelText: 'Monto')),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Lógica para guardar
+              Navigator.pop(context);
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
       ),
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paytogether/menu.dart';
 
 void main() {
-  runApp(const PayTogetherApp()); // Nombre más descriptivo
+  runApp(const PayTogetherApp());
 }
 
 class PayTogetherApp extends StatelessWidget {
@@ -11,9 +11,9 @@ class PayTogetherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PayTogether', // Añadido para identificación en el switcher de apps
+      title: 'PayTogether',
       theme: ThemeData(
-        primarySwatch: Colors.green, // Color principal de la app
+        primarySwatch: Colors.green, 
         fontFamily: 'Poppins', // Fuente global
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

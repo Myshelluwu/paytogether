@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const Users(),
-        '/el-canton': (context) => const GroupScreen(groupName: 'El Cantón'),
+        '/el-cantón': (context) => const GroupScreen(groupName: 'El Cantón'),
         '/escuela': (context) => const GroupScreen(groupName: 'Escuela'),
         '/amigos': (context) => const GroupScreen(groupName: 'Amigos'),
         '/kiki': (context) => const PersonScreen(personName: 'Kiki'),
@@ -56,7 +56,7 @@ class Users extends StatelessWidget {
               title: "Grupos",
               subtitle: "Administra tus grupos",
               items: const [
-                _GroupItem(name: 'El Cantón', route: '/el-canton'),
+                _GroupItem(name: 'El Cantón', route: '/el-cantón'),
                 _GroupItem(name: 'Escuela', route: '/escuela'),
                 _GroupItem(name: 'Amigos', route: '/amigos'),
               ],

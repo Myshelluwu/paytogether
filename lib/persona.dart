@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paytogether/grupo.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -37,46 +38,45 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-class GroupScreen extends StatelessWidget {
-  final String groupName;
+class PersonScreen extends StatelessWidget {
+  final String personName;
 
-  const GroupScreen({super.key, required this.groupName});
+  const PersonScreen({super.key, required this.personName});
 
   @override
   Widget build(BuildContext context) {
     // Datos de ejemplo
-    final List<String> members = ['Kiki', 'Oddie', 'O\'Brien'];
-    final double totalBalance = 1500.0;
-    final int totalExpenses = 5;
+    final List<String> groups = ['El Cantón', 'Amigos'];
+    final String phone = '555-123-4567';
+    final String email = '${personName.toLowerCase()}@example.com';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(groupName),
+        title: Text(personName),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () => _showEditGroupDialog(context, groupName),
+            onPressed: () => _showEditPersonDialog(context, personName),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Encabezado del grupo
+            // Encabezado de la persona
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.1),
+                color: Colors.green.withOpacity(0.1),
                 border: Border(
-                  bottom: BorderSide(color: Colors.blue.withOpacity(0.3)),
+                  bottom: BorderSide(color: Colors.green.withOpacity(0.3)),
                 ),
               ),
               child: Row(
                 children: [
                   const CircleAvatar(
                     radius: 40,
-                    backgroundColor: Colors.blue,
-                    child: Icon(Icons.group, size: 40, color: Colors.white),
+                    child: Icon(Icons.person, size: 40),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -84,7 +84,7 @@ class GroupScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          groupName,
+                          personName,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class GroupScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          '$totalExpenses gastos • Balance: \$$totalBalance',
+                          'Miembro de ${groups.length} grupos',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -105,52 +105,47 @@ class GroupScreen extends StatelessWidget {
               ),
             ),
 
-            // Sección de miembros
+            // Sección de información de contacto
             _buildInfoSection(
-              title: 'Miembros',
-              icon: Icons.people,
-              items: members
-                  .map((member) => ListTile(
-                        leading: const CircleAvatar(
-                          child: Icon(Icons.person),
-                        ),
-                        title: Text(member),
-                        subtitle: const Text('Miembro'),
-                        onTap: () => Navigator.pushNamed(context,
-                            '/${member.toLowerCase().replaceAll('\'', '')}'),
-                      ))
-                  .toList(),
-            ),
-
-            // Sección de gastos recientes
-            _buildInfoSection(
-              title: 'Gastos recientes',
-              icon: Icons.receipt_long,
+              title: 'Información de contacto',
+              icon: Icons.contact_page,
               items: [
                 ListTile(
-                  leading: const Icon(Icons.restaurant),
-                  title: const Text('Cena'),
-                  subtitle: const Text('Hace 2 días'),
-                  trailing: const Text('\$150'),
-                  onTap: () => _showExpenseDetails(context),
+                  leading: const Icon(Icons.phone),
+                  title: const Text('Teléfono'),
+                  subtitle: Text(phone),
+                  onTap: () => _callNumber(context, phone),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.movie),
-                  title: const Text('Cine'),
-                  subtitle: const Text('Hace 5 días'),
-                  trailing: const Text('\$80'),
-                  onTap: () => _showExpenseDetails(context),
+                  leading: const Icon(Icons.email),
+                  title: const Text('Email'),
+                  subtitle: Text(email),
+                  onTap: () => _sendEmail(context, email),
                 ),
               ],
             ),
 
-            // Botón para eliminar grupo
+            // Sección de grupos
+            _buildInfoSection(
+              title: 'Grupos',
+              icon: Icons.group,
+              items: groups
+                  .map((group) => ListTile(
+                        leading: const Icon(Icons.group),
+                        title: Text(group),
+                        onTap: () => Navigator.pushNamed(context,
+                            '/${group.toLowerCase().replaceAll(' ', '-')}'),
+                      ))
+                  .toList(),
+            ),
+
+            // Botón para eliminar persona
             Padding(
               padding: const EdgeInsets.all(16),
               child: ElevatedButton.icon(
                 onPressed: () => _showConfirmDeleteDialog(context),
                 icon: const Icon(Icons.delete),
-                label: const Text('Eliminar grupo'),
+                label: const Text('Eliminar persona'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -176,7 +171,7 @@ class GroupScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
           child: Row(
             children: [
-              Icon(icon, color: Colors.blue),
+              Icon(icon, color: Colors.green),
               const SizedBox(width: 8),
               Text(
                 title,
@@ -193,14 +188,18 @@ class GroupScreen extends StatelessWidget {
     );
   }
 
-  void _showEditGroupDialog(BuildContext context, String currentName) {
+  void _showEditPersonDialog(BuildContext context, String currentName) {
     final TextEditingController nameController =
         TextEditingController(text: currentName);
+    final TextEditingController phoneController =
+        TextEditingController(text: '555-123-4567');
+    final TextEditingController emailController =
+        TextEditingController(text: '${currentName.toLowerCase()}@example.com');
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Editar grupo'),
+        title: const Text('Editar persona'),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -208,7 +207,23 @@ class GroupScreen extends StatelessWidget {
               TextField(
                 controller: nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Nombre del grupo',
+                  labelText: 'Nombre',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: phoneController,
+                decoration: const InputDecoration(
+                  labelText: 'Teléfono',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -232,31 +247,17 @@ class GroupScreen extends StatelessWidget {
     );
   }
 
-  void _showExpenseDetails(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Detalles del gasto'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Descripción: Cena'),
-            SizedBox(height: 8),
-            Text('Monto: \$150'),
-            SizedBox(height: 8),
-            Text('Fecha: 2024-03-20'),
-            SizedBox(height: 8),
-            Text('Pagado por: Kiki'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
-          ),
-        ],
-      ),
+  void _callNumber(BuildContext context, String number) {
+    // Lógica para llamar al número
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Llamando a $number...')),
+    );
+  }
+
+  void _sendEmail(BuildContext context, String email) {
+    // Lógica para enviar email
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Enviando email a $email...')),
     );
   }
 
@@ -264,9 +265,9 @@ class GroupScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Eliminar grupo'),
-        content:
-            Text('¿Estás seguro de que quieres eliminar el grupo $groupName?'),
+        title: const Text('Eliminar persona'),
+        content: Text(
+            '¿Estás seguro de que quieres eliminar a $personName de tu círculo?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -274,7 +275,7 @@ class GroupScreen extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Lógica para eliminar grupo
+              // Lógica para eliminar persona
               Navigator.pop(context); // Cerrar diálogo
               Navigator.pop(context); // Regresar a la pantalla anterior
             },

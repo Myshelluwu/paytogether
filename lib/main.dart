@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:paytogether/menu.dart';
+import 'package:paytogether/circulo.dart' as usuarios;
+import 'package:paytogether/persona.dart';
+import 'package:paytogether/grupo.dart';
 
 void main() {
   runApp(const PayTogetherApp());
@@ -13,11 +16,21 @@ class PayTogetherApp extends StatelessWidget {
     return MaterialApp(
       title: 'PayTogether',
       theme: ThemeData(
-        primarySwatch: Colors.green, 
+        primarySwatch: Colors.green,
         fontFamily: 'Poppins', // Fuente global
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const SplashScreen(), // Renombrado para claridad
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/menu': (context) => const Menu(),
+        '/el-cantón': (context) => GroupScreen(groupName: 'El Cantón'),
+        '/escuela': (context) => GroupScreen(groupName: 'Escuela'),
+        '/amigos': (context) => GroupScreen(groupName: 'Amigos'),
+        '/kiki': (context) => const PersonScreen(personName: 'Kiki'),
+        '/oddie': (context) => const PersonScreen(personName: 'Oddie'),
+        '/obrien': (context) => const PersonScreen(personName: 'O\'Brien'),
+      },
       debugShowCheckedModeBanner: false, // Quita el banner de debug
     );
   }
@@ -43,10 +56,7 @@ class SplashScreen extends StatelessWidget {
             const SizedBox(height: 20), // Espaciado
             TextButton(
               onPressed: () {
-                Navigator.pushReplacement( // Mejor que push para pantalla de inicio
-                  context,
-                  MaterialPageRoute(builder: (context) => const Menu()),
-                );
+                Navigator.pushReplacementNamed(context, '/menu');
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.green,

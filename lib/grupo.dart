@@ -46,8 +46,6 @@ class GroupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Datos de ejemplo
     final List<String> members = ['Kiki', 'Oddie', 'O\'Brien'];
-    final double totalBalance = 1500.0;
-    final int totalExpenses = 5;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,14 +88,6 @@ class GroupScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          '$totalExpenses gastos • Balance: \$$totalBalance',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -112,7 +102,7 @@ class GroupScreen extends StatelessWidget {
               items: members
                   .map((member) => ListTile(
                         leading: const CircleAvatar(
-                          child: Icon(Icons.person),
+                          child: Icon(Icons.person, color: Colors.white),
                         ),
                         title: Text(member),
                         subtitle: const Text('Miembro'),
@@ -122,37 +112,14 @@ class GroupScreen extends StatelessWidget {
                   .toList(),
             ),
 
-            // Sección de gastos recientes
-            _buildInfoSection(
-              title: 'Gastos recientes',
-              icon: Icons.receipt_long,
-              items: [
-                ListTile(
-                  leading: const Icon(Icons.restaurant),
-                  title: const Text('Cena'),
-                  subtitle: const Text('Hace 2 días'),
-                  trailing: const Text('\$150'),
-                  onTap: () => _showExpenseDetails(context),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.movie),
-                  title: const Text('Cine'),
-                  subtitle: const Text('Hace 5 días'),
-                  trailing: const Text('\$80'),
-                  onTap: () => _showExpenseDetails(context),
-                ),
-              ],
-            ),
-
             // Botón para eliminar grupo
             Padding(
               padding: const EdgeInsets.all(16),
               child: ElevatedButton.icon(
-                onPressed: () => _showConfirmDeleteDialog(context),
-                icon: const Icon(Icons.delete),
-                label: const Text('Eliminar grupo'),
+                onPressed: () => _showEditGroupMembersDialog(context),
+                label: const Text('Agregar miembros'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: Colors.green,
                   foregroundColor: Colors.white,
                   minimumSize: const Size(double.infinity, 50),
                 ),
@@ -176,7 +143,7 @@ class GroupScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
           child: Row(
             children: [
-              Icon(icon, color: Colors.blue),
+              Icon(icon, color: Colors.green),
               const SizedBox(width: 8),
               Text(
                 title,
@@ -193,6 +160,7 @@ class GroupScreen extends StatelessWidget {
     );
   }
 
+  
   void _showEditGroupDialog(BuildContext context, String currentName) {
     final TextEditingController nameController =
         TextEditingController(text: currentName);
@@ -212,48 +180,70 @@ class GroupScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () => _showConfirmDeleteDialog(context),
+                icon: const Icon(Icons.delete, color: Colors.white),
+                label: const Text('Eliminar grupo'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+              ),
             ],
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
           ),
           ElevatedButton(
             onPressed: () {
               // Lógica para guardar cambios
               Navigator.pop(context);
             },
-            child: const Text('Guardar'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: const Text('Guardar', style: TextStyle(color: Colors.white),),
           ),
         ],
       ),
     );
   }
 
-  void _showExpenseDetails(BuildContext context) {
+  void _showEditGroupMembersDialog(BuildContext context) {
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Detalles del gasto'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Descripción: Cena'),
-            SizedBox(height: 8),
-            Text('Monto: \$150'),
-            SizedBox(height: 8),
-            Text('Fecha: 2024-03-20'),
-            SizedBox(height: 8),
-            Text('Pagado por: Kiki'),
-          ],
+        title: const Text('Agregar miembros'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Nombre del miembro',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cerrar'),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Lógica para guardar cambios
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: const Text('Guardar', style: TextStyle(color: Colors.white),),
           ),
         ],
       ),
@@ -265,12 +255,11 @@ class GroupScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Eliminar grupo'),
-        content:
-            Text('¿Estás seguro de que quieres eliminar el grupo $groupName?'),
+        content: Text('¿Estás seguro de que quieres eliminar el grupo $groupName?', style: TextStyle(color: Colors.black),),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
           ),
           ElevatedButton(
             onPressed: () {
@@ -279,7 +268,7 @@ class GroupScreen extends StatelessWidget {
               Navigator.pop(context); // Regresar a la pantalla anterior
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Eliminar'),
+            child: const Text('Eliminar', style: TextStyle(color: Colors.white),),
           ),
         ],
       ),

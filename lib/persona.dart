@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:paytogether/grupo.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -47,7 +46,6 @@ class PersonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Datos de ejemplo
     final List<String> groups = ['El Cantón', 'Amigos'];
-    final String phone = '555-123-4567';
     final String email = '${personName.toLowerCase()}@example.com';
 
     return Scaffold(
@@ -111,16 +109,9 @@ class PersonScreen extends StatelessWidget {
               icon: Icons.contact_page,
               items: [
                 ListTile(
-                  leading: const Icon(Icons.phone),
-                  title: const Text('Teléfono'),
-                  subtitle: Text(phone),
-                  onTap: () => _callNumber(context, phone),
-                ),
-                ListTile(
                   leading: const Icon(Icons.email),
                   title: const Text('Email'),
                   subtitle: Text(email),
-                  onTap: () => _sendEmail(context, email),
                 ),
               ],
             ),
@@ -144,7 +135,6 @@ class PersonScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: ElevatedButton.icon(
                 onPressed: () => _showConfirmDeleteDialog(context),
-                icon: const Icon(Icons.delete),
                 label: const Text('Eliminar persona'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
@@ -191,8 +181,6 @@ class PersonScreen extends StatelessWidget {
   void _showEditPersonDialog(BuildContext context, String currentName) {
     final TextEditingController nameController =
         TextEditingController(text: currentName);
-    final TextEditingController phoneController =
-        TextEditingController(text: '555-123-4567');
     final TextEditingController emailController =
         TextEditingController(text: '${currentName.toLowerCase()}@example.com');
 
@@ -211,14 +199,7 @@ class PersonScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: phoneController,
-                decoration: const InputDecoration(
-                  labelText: 'Teléfono',
-                  border: OutlineInputBorder(),
-                ),
-              ),
+
               const SizedBox(height: 16),
               TextField(
                 controller: emailController,
@@ -233,31 +214,18 @@ class PersonScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
           ),
           ElevatedButton(
             onPressed: () {
               // Lógica para guardar cambios
               Navigator.pop(context);
             },
-            child: const Text('Guardar'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            child: const Text('Guardar', style: TextStyle(color: Colors.white),),
           ),
         ],
       ),
-    );
-  }
-
-  void _callNumber(BuildContext context, String number) {
-    // Lógica para llamar al número
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Llamando a $number...')),
-    );
-  }
-
-  void _sendEmail(BuildContext context, String email) {
-    // Lógica para enviar email
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Enviando email a $email...')),
     );
   }
 
@@ -271,7 +239,7 @@ class PersonScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
           ),
           ElevatedButton(
             onPressed: () {
@@ -280,7 +248,7 @@ class PersonScreen extends StatelessWidget {
               Navigator.pop(context); // Regresar a la pantalla anterior
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Eliminar'),
+            child: const Text('Eliminar', style: TextStyle(color: Colors.white),),
           ),
         ],
       ),

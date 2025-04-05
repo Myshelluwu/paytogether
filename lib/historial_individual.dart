@@ -123,7 +123,7 @@ class HistorialDeudasScreen extends StatelessWidget {
                     ),
                     title: Text(transaction['descripcion']),
                     subtitle: Text(
-                      '${transaction['fecha']} • ${transaction['pagadoPor']} pagó',
+                      '${transaction['fecha']} • ${transaction['pagadoPor']} ${transaction['pagadoPor'] == 'Tú' ? 'pagaste' : 'pagó'}',
                       style: const TextStyle(fontSize: 12),
                     ),
                     trailing: Text(

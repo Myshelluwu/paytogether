@@ -183,6 +183,8 @@ class Menu extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        minimumSize: const Size(120, 48), // Tamaño mínimo para ambos botones
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -190,11 +192,16 @@ class Menu extends StatelessWidget {
         children: [
           Icon(icon, size: 20, color: Colors.green),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: const TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 14,
+          Flexible(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 14,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              textAlign: TextAlign.center,
             ),
           ),
         ],

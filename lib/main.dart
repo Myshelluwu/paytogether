@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paytogether/menu.dart';
 import 'package:paytogether/persona.dart';
 import 'package:paytogether/grupo.dart';
-import 'package:paytogether/historial_deudas.dart';
+import 'package:paytogether/historial_individual.dart';
 import 'package:paytogether/historial_grupo.dart';
 
 void main() {

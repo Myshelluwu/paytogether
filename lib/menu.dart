@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paytogether/circulo.dart';
 import 'package:paytogether/cuentasind.dart';
 import 'package:paytogether/cuentasgru.dart';
+import 'package:paytogether/agregar_gasto.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -160,7 +161,7 @@ class Menu extends StatelessWidget {
 
   FloatingActionButton _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => _showAddExpenseDialog(context),
+      onPressed: () => _navigateTo(context, const AgregarGastoScreen()),
       tooltip: 'Añadir Gasto',
       shape: const CircleBorder(),
       backgroundColor: Colors.green,

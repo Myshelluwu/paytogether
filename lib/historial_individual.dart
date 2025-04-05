@@ -1,51 +1,88 @@
 import 'package:flutter/material.dart';
 
-class HistorialDeudasScreen extends StatelessWidget {
+class HistorialDeudasScreen extends StatefulWidget {
   final String personName;
-  final String currentUser = 'Tú'; // Nombre del usuario actual
+  final String currentUser = 'Tú';
 
   const HistorialDeudasScreen({super.key, required this.personName});
 
   @override
-  Widget build(BuildContext context) {
-    // Datos de ejemplo
-    final List<Map<String, dynamic>> transactions = [
+  State<HistorialDeudasScreen> createState() => _HistorialDeudasScreenState();
+}
+
+class _HistorialDeudasScreenState extends State<HistorialDeudasScreen> {
+  DateTime _selectedDate = DateTime.now();
+  late List<Map<String, dynamic>> _allTransactions;
+
+  @override
+  void initState() {
+    super.initState();
+    _allTransactions = [
       {
-        'fecha': '2024-03-20',
+        'fecha': '2025-04-02',
         'descripcion': 'Cena en restaurante',
         'monto': 150.0,
         'pagadoPor': 'Tú',
         'deuda': 75.0,
       },
       {
-        'fecha': '2024-03-18',
+        'fecha': '2025-03-18',
         'descripcion': 'Cine',
         'monto': 80.0,
-        'pagadoPor': personName,
+        'pagadoPor': widget.personName,
         'deuda': -40.0,
       },
       {
-        'fecha': '2024-03-15',
+        'fecha': '2025-03-15',
+        'descripcion': 'Supermercado',
+        'monto': 200.0,
+        'pagadoPor': 'Tú',
+        'deuda': 100.0,
+      },
+      {
+        'fecha': '2025-02-20',
+        'descripcion': 'Cena en restaurante',
+        'monto': 150.0,
+        'pagadoPor': 'Tú',
+        'deuda': 75.0,
+      },
+      {
+        'fecha': '2025-02-18',
+        'descripcion': 'Cine',
+        'monto': 80.0,
+        'pagadoPor': widget.personName,
+        'deuda': -40.0,
+      },
+      {
+        'fecha': '2025-02-15',
         'descripcion': 'Supermercado',
         'monto': 200.0,
         'pagadoPor': 'Tú',
         'deuda': 100.0,
       },
     ];
+  }
 
-    // Calcular balance total
-    final double balanceTotal =
-        transactions.fold(0, (sum, item) => sum + item['deuda']);
+  List<Map<String, dynamic>> get _filteredTransactions {
+    return _allTransactions.where((transaction) {
+      final transactionDate = DateTime.parse(transaction['fecha']);
+      return transactionDate.year == _selectedDate.year &&
+          transactionDate.month == _selectedDate.month;
+    }).toList();
+  }
+
+  double get _totalBalance {
+    return _allTransactions.fold(0, (sum, item) => sum + item['deuda']);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final transactions = _filteredTransactions;
+    final balanceTotal = _totalBalance;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historial con $personName'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _showAddTransactionDialog(context),
-          ),
-        ],
+        title: Text('Historial con ${widget.personName}'),
       ),
       body: Column(
         children: [
@@ -78,8 +115,8 @@ class HistorialDeudasScreen extends StatelessWidget {
                     children: [
                       Text(
                         balanceTotal > 0
-                            ? '$personName te debe'
-                            : 'Le debes a $personName',
+                            ? '${widget.personName} te debe'
+                            : 'Le debes a ${widget.personName}',
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.grey,
@@ -95,6 +132,51 @@ class HistorialDeudasScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+              ],
+            ),
+          ),
+
+          // Selector de mes
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              border: Border(
+                bottom: BorderSide(color: Colors.grey[300]!),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left),
+                  onPressed: () {
+                    setState(() {
+                      _selectedDate = DateTime(
+                        _selectedDate.year,
+                        _selectedDate.month - 1,
+                      );
+                    });
+                  },
+                ),
+                Text(
+                  '${_getMonthName(_selectedDate.month)} ${_selectedDate.year}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right),
+                  onPressed: () {
+                    setState(() {
+                      _selectedDate = DateTime(
+                        _selectedDate.year,
+                        _selectedDate.month + 1,
+                      );
+                    });
+                  },
                 ),
               ],
             ),
@@ -144,67 +226,22 @@ class HistorialDeudasScreen extends StatelessWidget {
     );
   }
 
-  void _showAddTransactionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Nueva transacción'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Descripción',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Monto total',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                decoration: const InputDecoration(
-                  labelText: 'Pagado por',
-                  border: OutlineInputBorder(),
-                ),
-                items: [
-                  DropdownMenuItem(
-                    value: currentUser,
-                    child: Text(currentUser),
-                  ),
-                  DropdownMenuItem(
-                    value: personName,
-                    child: Text(personName),
-                  ),
-                ],
-                onChanged: (value) {},
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child:
-                const Text('Cancelar', style: TextStyle(color: Colors.black)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Lógica para guardar transacción
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: const Text('Guardar', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
+  String _getMonthName(int month) {
+    const monthNames = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre'
+    ];
+    return monthNames[month - 1];
   }
 
   void _showTransactionDetails(

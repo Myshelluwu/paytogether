@@ -176,36 +176,39 @@ class Menu extends StatelessWidget {
     required IconData icon,
     required Widget destination,
   }) {
-    return OutlinedButton(
-      onPressed: () => _navigateTo(context, destination),
-      style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.green,
-        side: const BorderSide(color: Colors.green),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-        minimumSize: const Size(120, 48), // Tamaño mínimo para ambos botones
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 20, color: Colors.green),
-          const SizedBox(width: 8),
-          Flexible(
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 14,
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-            ),
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: () => _navigateTo(context, destination),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.green,
+          side: const BorderSide(color: Colors.green),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
-        ],
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          minimumSize:
+              const Size(double.infinity, 60), // Altura fija para ambos botones
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 20, color: Colors.green),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                text,
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -214,36 +217,6 @@ class Menu extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => screen),
-    );
-  }
-
-  void _showAddExpenseDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Nuevo Gasto'),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(decoration: InputDecoration(labelText: 'Descripción')),
-            SizedBox(height: 10),
-            TextField(decoration: InputDecoration(labelText: 'Monto')),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Lógica para guardar
-              Navigator.pop(context);
-            },
-            child: const Text('Guardar'),
-          ),
-        ],
-      ),
     );
   }
 }

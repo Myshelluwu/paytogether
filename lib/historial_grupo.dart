@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 
-class HistorialGrupoScreen extends StatelessWidget {
+class HistorialGrupoScreen extends StatefulWidget {
   final String groupName;
 
   const HistorialGrupoScreen({super.key, required this.groupName});
 
   @override
-  Widget build(BuildContext context) {
-    // Lista de ejemplo de compras grupales
-    final List<Map<String, dynamic>> compras = [
+  State<HistorialGrupoScreen> createState() => _HistorialGrupoScreenState();
+}
+
+class _HistorialGrupoScreenState extends State<HistorialGrupoScreen> {
+  DateTime _selectedDate = DateTime.now();
+  late List<Map<String, dynamic>> _allCompras;
+
+  @override
+  void initState() {
+    super.initState();
+    _allCompras = [
       {
-        'fecha': '2024-03-15',
+        'fecha': '2025-04-02',
         'descripcion': 'Cena en restaurante',
         'total': 1200.00,
         'pagadoPor': 'Kiki',
@@ -18,7 +26,7 @@ class HistorialGrupoScreen extends StatelessWidget {
         'detalles': 'Cena de celebración de cumpleaños'
       },
       {
-        'fecha': '2024-03-10',
+        'fecha': '2025-03-18',
         'descripcion': 'Supermercado',
         'total': 850.50,
         'pagadoPor': 'Oddie',
@@ -26,7 +34,31 @@ class HistorialGrupoScreen extends StatelessWidget {
         'detalles': 'Compra semanal de víveres'
       },
       {
-        'fecha': '2024-03-05',
+        'fecha': '2025-03-15',
+        'descripcion': 'Gasolina',
+        'total': 500.00,
+        'pagadoPor': 'O\'Brien',
+        'participantes': ['Kiki', 'Oddie', 'O\'Brien'],
+        'detalles': 'Gasolina para el viaje'
+      },
+      {
+        'fecha': '2025-02-20',
+        'descripcion': 'Cena en restaurante',
+        'total': 1200.00,
+        'pagadoPor': 'Kiki',
+        'participantes': ['Kiki', 'Oddie', 'O\'Brien'],
+        'detalles': 'Cena de celebración de cumpleaños'
+      },
+      {
+        'fecha': '2025-02-18',
+        'descripcion': 'Supermercado',
+        'total': 850.50,
+        'pagadoPor': 'Oddie',
+        'participantes': ['Kiki', 'Oddie', 'O\'Brien'],
+        'detalles': 'Compra semanal de víveres'
+      },
+      {
+        'fecha': '2025-02-15',
         'descripcion': 'Gasolina',
         'total': 500.00,
         'pagadoPor': 'O\'Brien',
@@ -34,11 +66,29 @@ class HistorialGrupoScreen extends StatelessWidget {
         'detalles': 'Gasolina para el viaje'
       },
     ];
+  }
+
+  List<Map<String, dynamic>> get _filteredCompras {
+    return _allCompras.where((compra) {
+      final compraDate = DateTime.parse(compra['fecha']);
+      return compraDate.year == _selectedDate.year &&
+          compraDate.month == _selectedDate.month;
+    }).toList();
+  }
+
+  double get _totalGastado {
+    return _allCompras.fold(0.0, (sum, item) => sum + item['total']);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final compras = _filteredCompras;
+    final totalGastado = _totalGastado;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Historial de $groupName',
+          'Historial de ${widget.groupName}',
           style: const TextStyle(
             color: Colors.green,
             fontWeight: FontWeight.bold,
@@ -59,7 +109,7 @@ class HistorialGrupoScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Resumen de $groupName',
+                  'Resumen de ${widget.groupName}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -67,7 +117,7 @@ class HistorialGrupoScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Total gastado: \$${compras.fold(0.0, (sum, item) => sum + item['total']).toStringAsFixed(2)}',
+                  'Total gastado: \$${totalGastado.toStringAsFixed(2)}',
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.green,
@@ -75,11 +125,55 @@ class HistorialGrupoScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Número de compras: ${compras.length}',
+                  'Número de compras: ${_allCompras.length}',
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.grey,
                   ),
+                ),
+              ],
+            ),
+          ),
+          // Selector de mes
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              border: Border(
+                bottom: BorderSide(color: Colors.grey[300]!),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.chevron_left),
+                  onPressed: () {
+                    setState(() {
+                      _selectedDate = DateTime(
+                        _selectedDate.year,
+                        _selectedDate.month - 1,
+                      );
+                    });
+                  },
+                ),
+                Text(
+                  '${_getMonthName(_selectedDate.month)} ${_selectedDate.year}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.chevron_right),
+                  onPressed: () {
+                    setState(() {
+                      _selectedDate = DateTime(
+                        _selectedDate.year,
+                        _selectedDate.month + 1,
+                      );
+                    });
+                  },
                 ),
               ],
             ),
@@ -134,12 +228,25 @@ class HistorialGrupoScreen extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddCompraDialog(context),
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
-      ),
     );
+  }
+
+  String _getMonthName(int month) {
+    const monthNames = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre'
+    ];
+    return monthNames[month - 1];
   }
 
   void _showCompraDetails(BuildContext context, Map<String, dynamic> compra) {
@@ -166,65 +273,6 @@ class HistorialGrupoScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const Text('Cerrar'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddCompraDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Agregar nueva compra'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Descripción',
-                hintText: 'Ej: Cena en restaurante',
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Total',
-                hintText: 'Ej: 1200.00',
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Pagado por',
-                hintText: 'Ej: Kiki',
-              ),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Detalles',
-                hintText: 'Ej: Cena de celebración',
-              ),
-              maxLines: 2,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Aquí iría la lógica para guardar la nueva compra
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-            ),
-            child: const Text('Guardar'),
           ),
         ],
       ),

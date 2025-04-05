@@ -334,14 +334,9 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                         decoration: const InputDecoration(
                           labelText: 'Descripción',
                           border: OutlineInputBorder(),
+                          hintText: 'Opcional',
                         ),
                         maxLines: 2,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor ingresa una descripción';
-                          }
-                          return null;
-                        },
                       ),
                     ],
                   ),
@@ -377,7 +372,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Gasto añadido correctamente'),
-                              backgroundColor: Colors.green,
+                              backgroundColor: Colors.grey,
                               duration: Duration(seconds: 2),
                             ),
                           );

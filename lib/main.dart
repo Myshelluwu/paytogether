@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:paytogether/menu.dart';
-import 'package:paytogether/circulo.dart' as usuarios;
 import 'package:paytogether/persona.dart';
 import 'package:paytogether/grupo.dart';
 import 'package:paytogether/historial_deudas.dart';
+import 'package:paytogether/historial_grupo.dart';
 
 void main() {
   runApp(const PayTogetherApp());
@@ -37,6 +37,12 @@ class PayTogetherApp extends StatelessWidget {
             const HistorialDeudasScreen(personName: 'Oddie'),
         '/historial-obrien': (context) =>
             const HistorialDeudasScreen(personName: 'O\'Brien'),
+        '/historial-el-canton': (context) =>
+            const HistorialGrupoScreen(groupName: 'El Cantón'),
+        '/historial-amigos': (context) =>
+            const HistorialGrupoScreen(groupName: 'Amigos'),
+        '/historial-escuela': (context) =>
+            const HistorialGrupoScreen(groupName: 'Escuela'),
       },
       debugShowCheckedModeBanner: false, // Quita el banner de debug
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paytogether/circulo.dart';
-import 'package:paytogether/gastos.dart';
 import 'package:paytogether/cuentasind.dart';
+import 'package:paytogether/cuentasgru.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -82,7 +82,7 @@ class Menu extends StatelessWidget {
                   context: context,
                   text: 'Cuentas Grupales',
                   icon: Icons.group_outlined,
-                  destination: const Gastos(),
+                  destination: const CuentasGrupales(groupName: 'El Cantón'),
                 ),
               ),
             ),

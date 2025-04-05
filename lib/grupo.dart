@@ -160,7 +160,6 @@ class GroupScreen extends StatelessWidget {
     );
   }
 
-  
   void _showEditGroupDialog(BuildContext context, String currentName) {
     final TextEditingController nameController =
         TextEditingController(text: currentName);
@@ -197,7 +196,10 @@ class GroupScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -205,7 +207,10 @@ class GroupScreen extends StatelessWidget {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: const Text('Guardar', style: TextStyle(color: Colors.white),),
+            child: const Text(
+              'Guardar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -213,7 +218,6 @@ class GroupScreen extends StatelessWidget {
   }
 
   void _showEditGroupMembersDialog(BuildContext context) {
-
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -235,7 +239,10 @@ class GroupScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -243,7 +250,10 @@ class GroupScreen extends StatelessWidget {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: const Text('Guardar', style: TextStyle(color: Colors.white),),
+            child: const Text(
+              'Guardar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -255,11 +265,17 @@ class GroupScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Eliminar grupo'),
-        content: Text('¿Estás seguro de que quieres eliminar el grupo $groupName?', style: TextStyle(color: Colors.black),),
+        content: Text(
+          '¿Estás seguro de que quieres eliminar el grupo $groupName?',
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -268,7 +284,10 @@ class GroupScreen extends StatelessWidget {
               Navigator.pop(context); // Regresar a la pantalla anterior
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Eliminar', style: TextStyle(color: Colors.white),),
+            child: const Text(
+              'Eliminar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:paytogether/menu.dart';
 import 'package:paytogether/circulo.dart' as usuarios;
 import 'package:paytogether/persona.dart';
 import 'package:paytogether/grupo.dart';
+import 'package:paytogether/historial_deudas.dart';
 
 void main() {
   runApp(const PayTogetherApp());
@@ -30,6 +31,12 @@ class PayTogetherApp extends StatelessWidget {
         '/kiki': (context) => const PersonScreen(personName: 'Kiki'),
         '/oddie': (context) => const PersonScreen(personName: 'Oddie'),
         '/obrien': (context) => const PersonScreen(personName: 'O\'Brien'),
+        '/historial-kiki': (context) =>
+            const HistorialDeudasScreen(personName: 'Kiki'),
+        '/historial-oddie': (context) =>
+            const HistorialDeudasScreen(personName: 'Oddie'),
+        '/historial-obrien': (context) =>
+            const HistorialDeudasScreen(personName: 'O\'Brien'),
       },
       debugShowCheckedModeBanner: false, // Quita el banner de debug
     );

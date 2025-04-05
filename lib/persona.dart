@@ -47,6 +47,7 @@ class PersonScreen extends StatelessWidget {
     // Datos de ejemplo
     final List<String> groups = ['El Cantón', 'Amigos'];
     final String email = '${personName.toLowerCase()}@example.com';
+    final String phone = '+1 555-555-5555';
 
     return Scaffold(
       appBar: AppBar(
@@ -109,9 +110,23 @@ class PersonScreen extends StatelessWidget {
               icon: Icons.contact_page,
               items: [
                 ListTile(
+                  leading: const Icon(Icons.phone),
+                  title: const Text('Teléfono'),
+                  subtitle: Text(phone),
+                  onTap: () => _callNumber(context, phone),
+                ),
+                ListTile(
                   leading: const Icon(Icons.email),
                   title: const Text('Email'),
                   subtitle: Text(email),
+                  onTap: () => _sendEmail(context, email),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.account_balance_wallet),
+                  title: const Text('Historial de deudas'),
+                  subtitle: const Text('Ver transacciones y saldos'),
+                  onTap: () => Navigator.pushNamed(context,
+                      '/historial-${personName.toLowerCase().replaceAll('\'', '')}'),
                 ),
               ],
             ),
@@ -199,7 +214,6 @@ class PersonScreen extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
               ),
-
               const SizedBox(height: 16),
               TextField(
                 controller: emailController,
@@ -214,7 +228,10 @@ class PersonScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -222,7 +239,10 @@ class PersonScreen extends StatelessWidget {
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-            child: const Text('Guardar', style: TextStyle(color: Colors.white),),
+            child: const Text(
+              'Guardar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -239,7 +259,10 @@ class PersonScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar', style: TextStyle(color: Colors.black),),
+            child: const Text(
+              'Cancelar',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -248,10 +271,21 @@ class PersonScreen extends StatelessWidget {
               Navigator.pop(context); // Regresar a la pantalla anterior
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Eliminar', style: TextStyle(color: Colors.white),),
+            child: const Text(
+              'Eliminar',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void _callNumber(BuildContext context, String phone) {
+    // Implementa la lógica para llamar al número
+  }
+
+  void _sendEmail(BuildContext context, String email) {
+    // Implementa la lógica para enviar un correo electrónico
   }
 }

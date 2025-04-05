@@ -16,16 +16,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         fontFamily: 'Poppins',
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const Users(),
-        '/el-cantón': (context) => const GroupScreen(groupName: 'El Cantón'),
-        '/escuela': (context) => const GroupScreen(groupName: 'Escuela'),
-        '/amigos': (context) => const GroupScreen(groupName: 'Amigos'),
-        '/kiki': (context) => const PersonScreen(personName: 'Kiki'),
-        '/oddie': (context) => const PersonScreen(personName: 'Oddie'),
-        '/obrien': (context) => const PersonScreen(personName: 'O\'Brien'),
-      },
     );
   }
 }
@@ -258,70 +248,4 @@ class _GroupItem {
   final String route;
 
   const _GroupItem({required this.name, required this.route});
-}
-
-class GroupScreen extends StatelessWidget {
-  final String groupName;
-
-  const GroupScreen({super.key, required this.groupName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(groupName),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.group, size: 60, color: Colors.blue),
-            const SizedBox(height: 20),
-            Text(
-              'Pantalla del grupo: $groupName',
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Volver'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PersonScreen extends StatelessWidget {
-  final String personName;
-
-  const PersonScreen({super.key, required this.personName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(personName),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.person, size: 60, color: Colors.green),
-            const SizedBox(height: 20),
-            Text(
-              'Pantalla de: $personName',
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Volver'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

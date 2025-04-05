@@ -113,20 +113,11 @@ class PersonScreen extends StatelessWidget {
                   leading: const Icon(Icons.phone),
                   title: const Text('Teléfono'),
                   subtitle: Text(phone),
-                  onTap: () => _callNumber(context, phone),
                 ),
                 ListTile(
                   leading: const Icon(Icons.email),
                   title: const Text('Email'),
                   subtitle: Text(email),
-                  onTap: () => _sendEmail(context, email),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.account_balance_wallet),
-                  title: const Text('Historial de deudas'),
-                  subtitle: const Text('Ver transacciones y saldos'),
-                  onTap: () => Navigator.pushNamed(context,
-                      '/historial-${personName.toLowerCase().replaceAll('\'', '')}'),
                 ),
               ],
             ),
@@ -281,11 +272,4 @@ class PersonScreen extends StatelessWidget {
     );
   }
 
-  void _callNumber(BuildContext context, String phone) {
-    // Implementa la lógica para llamar al número
-  }
-
-  void _sendEmail(BuildContext context, String email) {
-    // Implementa la lógica para enviar un correo electrónico
-  }
 }

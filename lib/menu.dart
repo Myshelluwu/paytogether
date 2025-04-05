@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paytogether/circulo.dart';
 import 'package:paytogether/gastos.dart';
+import 'package:paytogether/cuentasind.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -14,7 +15,7 @@ class Menu extends StatelessWidget {
     );
   }
 
-  // Componentes separados para mejor legibilidad
+  // Componentes separados
   AppBar _buildAppBar() {
     return AppBar(
       title: const Text(
@@ -70,7 +71,7 @@ class Menu extends StatelessWidget {
                   context: context,
                   text: 'Cuentas Individuales',
                   icon: Icons.person_outline,
-                  destination: const Users(),
+                  destination: const CuentasIndividuales(personName: 'Kiki'),
                 ),
               ),
             ),

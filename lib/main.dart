@@ -4,6 +4,7 @@ import 'package:paytogether/grupo.dart';
 import 'package:paytogether/persona.dart';
 import 'package:paytogether/historial_individual.dart';
 import 'package:paytogether/historial_grupo.dart';
+import 'package:paytogether/grafica_deudas.dart';
 
 void main() {
   runApp(const PayTogetherApp());
@@ -43,6 +44,7 @@ class PayTogetherApp extends StatelessWidget {
             const HistorialGrupoScreen(groupName: 'Amigos'),
         '/historial-escuela': (context) =>
             const HistorialGrupoScreen(groupName: 'Escuela'),
+        '/grafica-deudas': (context) => const GraficaDeudasScreen(),
       },
       debugShowCheckedModeBanner: false, // Quita el banner de debug
     );

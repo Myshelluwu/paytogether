@@ -3,6 +3,8 @@ import 'package:paytogether/circulo.dart';
 import 'package:paytogether/cuentasind.dart';
 import 'package:paytogether/cuentasgru.dart';
 import 'package:paytogether/agregar_gasto.dart';
+import 'package:paytogether/grafica_deudas.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -40,7 +42,7 @@ class Menu extends StatelessWidget {
           _buildDebtCalculationSection(context),
           const SizedBox(height: 24),
           const Divider(),
-          _buildDebtVisualizationSection(),
+          _buildDebtVisualizationSection(context),
           const SizedBox(height: 16),
           const Divider(),
           _buildCircleButton(context),
@@ -93,7 +95,7 @@ class Menu extends StatelessWidget {
     );
   }
 
-  Widget _buildDebtVisualizationSection() {
+  Widget _buildDebtVisualizationSection(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -106,24 +108,135 @@ class Menu extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        Center(
-          child: Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Column(
-                children: [
-                  Icon(Icons.pie_chart_outline, size: 50, color: Colors.green),
-                  SizedBox(height: 8),
-                  Text(
-                    'Gráfica de Deudas',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const Text(
+                  'Top 3 Deudores',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 200,
+                  child: BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: 1000,
+                      barTouchData: BarTouchData(
+                        enabled: true,
+                        touchTooltipData: BarTouchTooltipData(
+                          tooltipBgColor: Colors.grey[800],
+                          getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                            return BarTooltipItem(
+                              '${rod.toY.toStringAsFixed(2)}',
+                              const TextStyle(color: Colors.white),
+                            );
+                          },
+                        ),
+                      ),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              const names = ['Kiki', 'Oddie', 'O\'Brien'];
+                              return SideTitleWidget(
+                                axisSide: meta.axisSide,
+                                child: Text(
+                                  names[value.toInt()],
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                      ),
+                      borderData: FlBorderData(show: false),
+                      barGroups: [
+                        BarChartGroupData(
+                          x: 0,
+                          barRods: [
+                            BarChartRodData(
+                              toY: 500,
+                              color: Colors.green,
+                              width: 15,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ],
+                        ),
+                        BarChartGroupData(
+                          x: 1,
+                          barRods: [
+                            BarChartRodData(
+                              toY: 300,
+                              color: Colors.red,
+                              width: 15,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ],
+                        ),
+                        BarChartGroupData(
+                          x: 2,
+                          barRods: [
+                            BarChartRodData(
+                              toY: 200,
+                              color: Colors.green,
+                              width: 15,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 15,
+                      height: 15,
+                      color: Colors.green,
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      'Te deben',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    const SizedBox(width: 12),
+                    Container(
+                      width: 15,
+                      height: 15,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      'Debes',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

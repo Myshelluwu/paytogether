@@ -19,6 +19,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
   bool _gastoDividido = true;
   String _selectedPersona = 'Kiki';
   String _selectedGrupo = 'Escuela';
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void dispose() {
@@ -26,6 +27,36 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
     _montoController.dispose();
     _tituloController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.green,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
   }
 
   @override
@@ -90,7 +121,6 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                         ],
                       ),
                       const SizedBox(height: 16),
-
                       // Campos específicos según el tipo de gasto
                       if (_tipoGasto == 'individual') ...[
                         // Selector de persona
@@ -121,7 +151,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                             border: OutlineInputBorder(),
                           ),
                           value: _selectedGrupo,
-                          items: ['Escuela', 'Amigos', 'Familia']
+                          items: ['El Cantón', 'Escuela', 'Amigos']
                               .map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -309,21 +339,24 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                       const SizedBox(height: 16),
 
                       // Fecha
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.calendar_today),
-                            const SizedBox(width: 8),
-                            Text(
-                              '29/03/2025',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ],
+                      InkWell(
+                        onTap: () => _selectDate(context),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(Icons.calendar_today),
+                              const SizedBox(width: 8),
+                              Text(
+                                _formatDate(_selectedDate),
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -347,24 +380,6 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
               // Botones
               Row(
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _guardarGasto,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      child: const Text(
-                        'Guardar',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
@@ -398,6 +413,24 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                         'Continuar',
                         style: TextStyle(
                           fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _guardarGasto,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      child: const Text(
+                        'Guardar',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),

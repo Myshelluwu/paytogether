@@ -47,7 +47,7 @@ class PersonScreen extends StatelessWidget {
     // Datos de ejemplo
     final List<String> groups = ['El Cantón', 'Amigos'];
     final String email = '${personName.toLowerCase()}@example.com';
-    final String phone = '+1 555-555-5555';
+    const String phone = '+1 555-555-5555';
 
     return Scaffold(
       appBar: AppBar(

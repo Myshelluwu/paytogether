@@ -26,9 +26,9 @@ class PayTogetherApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/menu': (context) => const Menu(),
-        '/el-cantón': (context) => GroupScreen(groupName: 'El Cantón'),
-        '/escuela': (context) => GroupScreen(groupName: 'Escuela'),
-        '/amigos': (context) => GroupScreen(groupName: 'Amigos'),
+        '/el-cantón': (context) => const GroupScreen(groupName: 'El Cantón'),
+        '/escuela': (context) => const GroupScreen(groupName: 'Escuela'),
+        '/amigos': (context) => const GroupScreen(groupName: 'Amigos'),
         '/kiki': (context) => const PersonScreen(personName: 'Kiki'),
         '/oddie': (context) => const PersonScreen(personName: 'Oddie'),
         '/obrien': (context) => const PersonScreen(personName: 'O\'Brien'),

@@ -24,9 +24,9 @@ class CuentasIndividuales extends StatelessWidget {
               title: "Historial",
               subtitle: "Elige una persona para ver sus cuentas",
               items: [
-                _GroupItem(name: 'Kiki', route: '/historial-kiki'),
-                _GroupItem(name: 'Oddie', route: '/historial-oddie'),
-                _GroupItem(name: 'O\'Brien', route: '/historial-obrien'),
+                const _GroupItem(name: 'Kiki', route: '/historial-kiki'),
+                const _GroupItem(name: 'Oddie', route: '/historial-oddie'),
+                const _GroupItem(name: 'O\'Brien', route: '/historial-obrien'),
               ],
               icon: Icons.person,
               color: Colors.green,

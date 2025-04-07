@@ -8,19 +8,15 @@ class GraficaDeudasScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Datos de ejemplo
     final List<Deuda> deudas = [
-      Deuda('Kiki', 150.0, Colors.green),
-      Deuda('Oddie', -75.0, Colors.red),
-      Deuda('O\'Brien', 100.0, Colors.green),
+      Deuda('Kiki', 940.0, Colors.green),
+      Deuda('Oddie', 523.0, Colors.green),
+      Deuda('O\'Brien', -1158.0, Colors.red),
     ];
-
-    // Ordenar por valor absoluto y tomar las 3 mayores
-    deudas.sort((a, b) => b.monto.abs().compareTo(a.monto.abs()));
-    final topDeudas = deudas.take(3).toList();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Top 3 Deudas',
+          'Gráfica de Deudas',
           style: TextStyle(
             color: Colors.green,
             fontWeight: FontWeight.bold,
@@ -32,65 +28,83 @@ class GraficaDeudasScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Solo se visualizan las 3 personas con mayores deudas',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-              ),
+            Row(
+              children: [
+                const Text(
+                  'Leyenda: ',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.3),
+                    border: Border.all(color: Colors.green),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Te deben',
+                  style: TextStyle(fontSize: 14),
+                ),
+                const SizedBox(width: 12),
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.3),
+                    border: Border.all(color: Colors.red),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Les debes',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             Expanded(
               child: BarChart(
                 BarChartData(
+                  maxY: 1200,
+                  minY: 0,
                   alignment: BarChartAlignment.spaceAround,
-                  maxY: topDeudas
-                          .map((e) => e.monto.abs())
-                          .reduce((a, b) => a > b ? a : b) *
-                      1.2,
-                  barTouchData: BarTouchData(
-                    enabled: true,
-                    touchTooltipData: BarTouchTooltipData(
-                      tooltipBgColor: Colors.grey[800],
-                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                        return BarTooltipItem(
-                          '\$${rod.toY.toStringAsFixed(2)}',
-                          const TextStyle(color: Colors.white),
-                        );
-                      },
-                    ),
-                  ),
+                  barTouchData: BarTouchData(enabled: false),
                   titlesData: FlTitlesData(
                     show: true,
-                    bottomTitles: AxisTitles(
+                    leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
                         getTitlesWidget: (value, meta) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              topDeudas[value.toInt()].persona,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          if (value >= deudas.length) return const SizedBox();
+                          return Text(
+                            deudas[value.toInt()].persona,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
                             ),
                           );
                         },
+                        reservedSize: 50,
                       ),
                     ),
-                    leftTitles: AxisTitles(
+                    rightTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
-                    topTitles: AxisTitles(
+                    topTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
-                    rightTitles: AxisTitles(
+                    bottomTitles: const AxisTitles(
                       sideTitles: SideTitles(showTitles: false),
                     ),
                   ),
+                  gridData: const FlGridData(show: false),
                   borderData: FlBorderData(show: false),
-                  barGroups: topDeudas.asMap().entries.map((entry) {
+                  barGroups: deudas.asMap().entries.map((entry) {
                     final index = entry.key;
                     final deuda = entry.value;
                     return BarChartGroupData(
@@ -98,46 +112,42 @@ class GraficaDeudasScreen extends StatelessWidget {
                       barRods: [
                         BarChartRodData(
                           toY: deuda.monto.abs(),
-                          color: deuda.color,
-                          width: 20,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(4),
-                            topRight: Radius.circular(4),
+                          color: deuda.color.withOpacity(0.3),
+                          width: 25,
+                          borderRadius: BorderRadius.circular(4),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: deuda.color,
                           ),
                         ),
                       ],
+                      showingTooltipIndicators: [0],
                     );
                   }).toList(),
+                  extraLinesData: ExtraLinesData(
+                    horizontalLines: deudas.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final deuda = entry.value;
+                      return HorizontalLine(
+                        y: index.toDouble(),
+                        color: Colors.transparent,
+                        label: HorizontalLineLabel(
+                          show: true,
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.only(right: 5),
+                          style: TextStyle(
+                            color: deuda.color,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          labelResolver: (line) =>
+                              '\$${deuda.monto.abs().toStringAsFixed(0)}',
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Leyenda:',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  width: 20,
-                  height: 20,
-                  color: Colors.green,
-                ),
-                const SizedBox(width: 8),
-                const Text('Te deben'),
-                const SizedBox(width: 16),
-                Container(
-                  width: 20,
-                  height: 20,
-                  color: Colors.red,
-                ),
-                const SizedBox(width: 8),
-                const Text('Les debes'),
-              ],
             ),
           ],
         ),

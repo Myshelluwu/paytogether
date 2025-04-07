@@ -222,17 +222,17 @@ class GroupScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Agregar miembros'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Nombre del miembro',
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
             ],
           ),
         ),
@@ -267,7 +267,7 @@ class GroupScreen extends StatelessWidget {
         title: const Text('Eliminar grupo'),
         content: Text(
           '¿Estás seguro de que quieres eliminar el grupo $groupName?',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         actions: [
           TextButton(

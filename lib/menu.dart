@@ -3,8 +3,8 @@ import 'package:paytogether/circulo.dart';
 import 'package:paytogether/cuentasind.dart';
 import 'package:paytogether/cuentasgru.dart';
 import 'package:paytogether/agregar_gasto.dart';
-import 'package:paytogether/grafica_deudas.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:paytogether/grafica_deudas.dart';
 
 class Menu extends StatelessWidget {
   const Menu({super.key});
@@ -118,9 +118,9 @@ class Menu extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  'Top 3 Deudores',
+                  'Top 3 Deudas',
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -131,13 +131,14 @@ class Menu extends StatelessWidget {
                     BarChartData(
                       alignment: BarChartAlignment.spaceAround,
                       maxY: 1000,
+                      groupsSpace: 20,
                       barTouchData: BarTouchData(
                         enabled: true,
                         touchTooltipData: BarTouchTooltipData(
                           tooltipBgColor: Colors.grey[800],
                           getTooltipItem: (group, groupIndex, rod, rodIndex) {
                             return BarTooltipItem(
-                              '${rod.toY.toStringAsFixed(2)}',
+                              rod.toY.toStringAsFixed(2),
                               const TextStyle(color: Colors.white),
                             );
                           },
@@ -160,16 +161,17 @@ class Menu extends StatelessWidget {
                             },
                           ),
                         ),
-                        leftTitles: AxisTitles(
+                        leftTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false),
                         ),
-                        topTitles: AxisTitles(
+                        topTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false),
                         ),
-                        rightTitles: AxisTitles(
+                        rightTitles: const AxisTitles(
                           sideTitles: SideTitles(showTitles: false),
                         ),
                       ),
+                      gridData: FlGridData(show: false),
                       borderData: FlBorderData(show: false),
                       barGroups: [
                         BarChartGroupData(
@@ -178,10 +180,11 @@ class Menu extends StatelessWidget {
                             BarChartRodData(
                               toY: 500,
                               color: Colors.green,
-                              width: 15,
+                              width: 30,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ],
+                          showingTooltipIndicators: [0],
                         ),
                         BarChartGroupData(
                           x: 1,
@@ -189,10 +192,11 @@ class Menu extends StatelessWidget {
                             BarChartRodData(
                               toY: 300,
                               color: Colors.red,
-                              width: 15,
+                              width: 30,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ],
+                          showingTooltipIndicators: [0],
                         ),
                         BarChartGroupData(
                           x: 2,
@@ -200,10 +204,11 @@ class Menu extends StatelessWidget {
                             BarChartRodData(
                               toY: 200,
                               color: Colors.green,
-                              width: 15,
+                              width: 30,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ],
+                          showingTooltipIndicators: [0],
                         ),
                       ],
                     ),
@@ -214,27 +219,46 @@ class Menu extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 15,
-                      height: 15,
+                      width: 20,
+                      height: 20,
                       color: Colors.green,
                     ),
                     const SizedBox(width: 4),
                     const Text(
                       'Te deben',
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(width: 12),
                     Container(
-                      width: 15,
-                      height: 15,
+                      width: 20,
+                      height: 20,
                       color: Colors.red,
                     ),
                     const SizedBox(width: 4),
                     const Text(
                       'Debes',
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 14),
                     ),
                   ],
+                ),
+                const SizedBox(height: 16),
+                OutlinedButton(
+                  onPressed: () =>
+                      _navigateTo(context, const GraficaDeudasScreen()),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Colors.green,
+                    side: const BorderSide(color: Colors.green),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(width: 8),
+                      Text('Ver Gráfica de Gastos'),
+                    ],
+                  ),
                 ),
               ],
             ),

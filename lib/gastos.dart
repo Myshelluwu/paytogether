@@ -18,8 +18,8 @@ class Gastos extends StatelessWidget {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
+        body: const SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -31,15 +31,15 @@ class Gastos extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Poppins'),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6),
                 Text(
                   'Necesitas añadir participantes antes de registrar gastos',
                   style: TextStyle(
                       fontSize: 14, color: Colors.grey, fontFamily: 'Poppins'),
                 ),
-                const SizedBox(height: 24),
-                const Divider(),
-                const SizedBox(height: 16),
+                SizedBox(height: 24),
+                Divider(),
+                SizedBox(height: 16),
               ]),
             ],
           ),

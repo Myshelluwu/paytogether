@@ -24,9 +24,9 @@ class CuentasGrupales extends StatelessWidget {
               title: "Historial",
               subtitle: "Elige un grupo para ver sus cuentas",
               items: [
-                _GroupItem(name: 'El Cantón', route: '/historial-el-canton'),
-                _GroupItem(name: 'Escuela', route: '/historial-escuela'),
-                _GroupItem(name: 'Amigos', route: '/historial-amigos'),
+                const _GroupItem(name: 'El Cantón', route: '/historial-el-canton'),
+                const _GroupItem(name: 'Escuela', route: '/historial-escuela'),
+                const _GroupItem(name: 'Amigos', route: '/historial-amigos'),
               ],
               icon: Icons.person,
               color: Colors.green,

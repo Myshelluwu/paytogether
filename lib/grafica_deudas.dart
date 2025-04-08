@@ -23,135 +23,162 @@ class GraficaDeudasScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                const Text(
-                  'Leyenda: ',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+      body: Container(
+        color: Colors.grey[50],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-                Container(
-                  width: 16,
-                  height: 16,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildLegendItem(Colors.green, 'Te deben'),
+                    const SizedBox(width: 24),
+                    _buildLegendItem(Colors.red, 'Les debes'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.3),
-                    border: Border.all(color: Colors.green),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                const Text(
-                  'Te deben',
-                  style: TextStyle(fontSize: 14),
-                ),
-                const SizedBox(width: 12),
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.3),
-                    border: Border.all(color: Colors.red),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                const Text(
-                  'Les debes',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Expanded(
-              child: BarChart(
-                BarChartData(
-                  maxY: 1200,
-                  minY: 0,
-                  alignment: BarChartAlignment.spaceAround,
-                  barTouchData: BarTouchData(enabled: false),
-                  titlesData: FlTitlesData(
-                    show: true,
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (value, meta) {
-                          if (value >= deudas.length) return const SizedBox();
-                          return Text(
-                            deudas[value.toInt()].persona,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        },
-                        reservedSize: 50,
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
                       ),
-                    ),
-                    rightTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    bottomTitles: const AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
+                    ],
                   ),
-                  gridData: const FlGridData(show: false),
-                  borderData: FlBorderData(show: false),
-                  barGroups: deudas.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final deuda = entry.value;
-                    return BarChartGroupData(
-                      x: index,
-                      barRods: [
-                        BarChartRodData(
-                          toY: deuda.monto.abs(),
-                          color: deuda.color.withOpacity(0.3),
-                          width: 25,
-                          borderRadius: BorderRadius.circular(4),
-                          borderSide: BorderSide(
-                            width: 1,
-                            color: deuda.color,
+                  child: BarChart(
+                    BarChartData(
+                      maxY: 1200,
+                      minY: 0,
+                      alignment: BarChartAlignment.spaceAround,
+                      barTouchData: BarTouchData(enabled: false),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        leftTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        rightTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        topTitles: const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              if (value >= deudas.length)
+                                return const SizedBox();
+                              final deuda = deudas[value.toInt()];
+                              return Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '\$${deuda.monto.abs().toStringAsFixed(0)}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: deuda.color,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    deuda.persona,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                            reservedSize: 50,
                           ),
                         ),
-                      ],
-                      showingTooltipIndicators: [0],
-                    );
-                  }).toList(),
-                  extraLinesData: ExtraLinesData(
-                    horizontalLines: deudas.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final deuda = entry.value;
-                      return HorizontalLine(
-                        y: index.toDouble(),
-                        color: Colors.transparent,
-                        label: HorizontalLineLabel(
-                          show: true,
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(right: 5),
-                          style: TextStyle(
-                            color: deuda.color,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                          labelResolver: (line) =>
-                              '\$${deuda.monto.abs().toStringAsFixed(0)}',
-                        ),
-                      );
-                    }).toList(),
+                      ),
+                      gridData: const FlGridData(show: false),
+                      borderData: FlBorderData(show: false),
+                      barGroups: deudas.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final deuda = entry.value;
+                        return BarChartGroupData(
+                          x: index,
+                          barRods: [
+                            BarChartRodData(
+                              toY: deuda.monto.abs(),
+                              color: deuda.color.withOpacity(0.2),
+                              width: 30,
+                              borderRadius: BorderRadius.circular(6),
+                              borderSide: BorderSide(
+                                width: 2,
+                                color: deuda.color,
+                              ),
+                              backDrawRodData: BackgroundBarChartRodData(
+                                show: true,
+                                toY: 1200,
+                                color: Colors.grey[100],
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLegendItem(Color color, String text) {
+    return Row(
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(color: color, width: 2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
+          ),
+        ),
+      ],
     );
   }
 }

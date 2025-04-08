@@ -271,5 +271,4 @@ class PersonScreen extends StatelessWidget {
       ),
     );
   }
-
 }

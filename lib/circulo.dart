@@ -1,5 +1,6 @@
 //circulo.dart
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +21,35 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Users extends StatelessWidget {
+class Users extends StatefulWidget {
   const Users({super.key});
+
+  @override
+  State<Users> createState() => _UsersState();
+}
+
+class _UsersState extends State<Users> {
+  List<String> _groups = ['El Cantón', 'Escuela', 'Amigos'];
+  final List<String> _people = ['Kiki', 'Oddie', 'O\'Brien'];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGroups();
+  }
+
+  Future<void> _loadGroups() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedGroups = prefs.getStringList('groups') ?? _groups;
+    setState(() {
+      _groups = savedGroups;
+    });
+  }
+
+  Future<void> _saveGroups() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('groups', _groups);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +73,12 @@ class Users extends StatelessWidget {
               context: context,
               title: "Grupos",
               subtitle: "Administra tus grupos",
-              items: const [
-                _GroupItem(name: 'El Cantón', route: '/el-cantón'),
-                _GroupItem(name: 'Escuela', route: '/escuela'),
-                _GroupItem(name: 'Amigos', route: '/amigos'),
-              ],
+              items: _groups
+                  .map((group) => _GroupItem(
+                        name: group,
+                        route: '/${group.toLowerCase().replaceAll(' ', '-')}',
+                      ))
+                  .toList(),
               icon: Icons.group,
               color: Colors.blue,
             ),
@@ -65,7 +94,8 @@ class Users extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
                 label: const Text('Crear nuevo grupo'),
               ),
@@ -78,11 +108,12 @@ class Users extends StatelessWidget {
               context: context,
               title: "Personas",
               subtitle: "Personas en mi círculo",
-              items: const [
-                _GroupItem(name: 'Kiki', route: '/kiki'),
-                _GroupItem(name: 'Oddie', route: '/oddie'),
-                _GroupItem(name: 'O\'Brien', route: '/obrien'),
-              ],
+              items: _people
+                  .map((person) => _GroupItem(
+                        name: person,
+                        route: '/${person.toLowerCase().replaceAll('\'', '')}',
+                      ))
+                  .toList(),
               icon: Icons.person,
               color: Colors.green,
             ),
@@ -99,7 +130,8 @@ class Users extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
                 label: const Text('Añadir persona'),
               ),
@@ -140,16 +172,20 @@ class Users extends StatelessWidget {
 
         // Lista de elementos en columna
         Column(
-          children: items.map((item) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: _buildGroupButton(context, item.name, icon, color, item.route),
-          )).toList(),
+          children: items
+              .map((item) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: _buildGroupButton(
+                        context, item.name, icon, color, item.route),
+                  ))
+              .toList(),
         ),
       ],
     );
   }
 
-  Widget _buildGroupButton(BuildContext context, String name, IconData icon, Color color, String route) {
+  Widget _buildGroupButton(BuildContext context, String name, IconData icon,
+      Color color, String route) {
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton(
@@ -183,11 +219,14 @@ class Users extends StatelessWidget {
   }
 
   void _showAddGroupDialog(BuildContext context) {
+    final TextEditingController groupNameController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Nuevo grupo'),
         content: TextField(
+          controller: groupNameController,
           decoration: InputDecoration(
             labelText: 'Nombre del grupo',
             border: OutlineInputBorder(
@@ -201,9 +240,23 @@ class Users extends StatelessWidget {
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // Lógica para añadir grupo
-              Navigator.pop(context);
+            onPressed: () async {
+              final newGroupName = groupNameController.text.trim();
+              if (newGroupName.isNotEmpty) {
+                setState(() {
+                  _groups.add(newGroupName);
+                  Navigator.pop(context); 
+                });
+                await _saveGroups();
+                if (!mounted) return;
+                Navigator.pop(context); // Cerrar el diálogo
+                Navigator.pop(context); // Cerrar la ventana actual
+                Navigator.pushNamed(
+                  context,
+                  '/${newGroupName.toLowerCase().replaceAll(' ', '-')}',
+                  arguments: newGroupName,
+                );
+              }
             },
             child: const Text('Crear'),
           ),

@@ -26,7 +26,7 @@ class PayTogetherApp extends StatelessWidget {
       routes: {
         '/': (context) => const SplashScreen(),
         '/menu': (context) => const Menu(),
-        '/el-cantón': (context) => const GroupScreen(groupName: 'El Cantón'),
+        '/el-canton': (context) => const GroupScreen(groupName: 'El Cantón'),
         '/escuela': (context) => const GroupScreen(groupName: 'Escuela'),
         '/amigos': (context) => const GroupScreen(groupName: 'Amigos'),
         '/kiki': (context) => const PersonScreen(personName: 'Kiki'),
@@ -45,6 +45,16 @@ class PayTogetherApp extends StatelessWidget {
         '/historial-escuela': (context) =>
             const HistorialGrupoScreen(groupName: 'Escuela'),
         '/grafica-deudas': (context) => const GraficaDeudasScreen(),
+      },
+      onGenerateRoute: (settings) {
+        // Manejar rutas dinámicas para nuevos grupos
+        if (settings.name != null && settings.name!.startsWith('/')) {
+          final groupName = settings.name!.substring(1).replaceAll('-', ' ');
+          return MaterialPageRoute(
+            builder: (context) => GroupScreen(groupName: groupName),
+          );
+        }
+        return null;
       },
       debugShowCheckedModeBanner: false, // Quita el banner de debug
     );

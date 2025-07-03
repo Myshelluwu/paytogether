@@ -1,0 +1,26 @@
+# ========================================
+# CONFIGURACIÓN LOCAL DE ANDROID - PAYTOGETHER
+# ========================================
+# 
+# 📋 ARCHIVO DE EJEMPLO
+# Copiar este archivo como 'local.properties' y agregar tus claves reales
+# 
+# ========================================
+
+# SDK Location (configurado automáticamente por Android Studio)
+sdk.dir=C\:\\Users\\YourUsername\\AppData\\Local\\Android\\Sdk
+
+# Google Maps API Key para Android
+GOOGLE_MAPS_API_KEY=tu_google_maps_api_key_aqui
+
+# ========================================
+# INSTRUCCIONES DE USO
+# ========================================
+#
+# 1. Copiar este archivo como 'local.properties' en la carpeta android/
+# 2. Reemplazar 'tu_google_maps_api_key_aqui' con tu API Key real de Google Maps
+# 3. Ajustar la ruta del SDK según tu instalación de Android Studio
+# 4. El archivo 'local.properties' ya está en .gitignore para no subirse a Git
+# 5. Esta configuración se usará automáticamente en el build de Android
+#
+# ======================================== 
